@@ -15,7 +15,7 @@ public class Generator {
     public static int[][] generate(int bombnum, final int width, final int height) {
         Random r = new Random();
 
-        int[][] grid = int[width][height];
+        int[][] grid = new int[width][height];
         for (int x = 0; x < width; x++) {
             grid[x] = new int[height];
         }
@@ -45,6 +45,8 @@ public class Generator {
                 grid[x][y] = getCellNum(grid, width, height, x, y);
             }
         }
+
+        return grid;
     }
 
     /**

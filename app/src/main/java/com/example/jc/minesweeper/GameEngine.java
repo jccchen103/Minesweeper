@@ -54,6 +54,8 @@ public class GameEngine {
     }
 
     public View getCell(int position) {
-        return null;
+        int x = position % GameEngine.WIDTH;
+        int y = (int)(position / GameEngine.HEIGHT);
+        return MinesweeperGrid[x][y];
     }
 }

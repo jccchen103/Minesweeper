@@ -16,6 +16,7 @@ import com.example.jc.minesweeper.GameEngine;
 public class Grid extends GridView {
     public Grid (Context context, AttributeSet attrSet) {
         super(context, attrSet);
+        setNumColumns(GameEngine.WIDTH);
     }
 
     private class GridAdapter extends BaseAdapter {
