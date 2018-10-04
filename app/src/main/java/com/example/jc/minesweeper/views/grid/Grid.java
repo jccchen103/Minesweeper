@@ -16,8 +16,18 @@ import com.example.jc.minesweeper.GameEngine;
 public class Grid extends GridView {
     public Grid (Context context, AttributeSet attrSet) {
         super(context, attrSet);
+        GameEngine.getInstance().createGrid(context);
         setNumColumns(GameEngine.WIDTH);
+        setAdapter(new GridAdapter());
     }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // make every cell square
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    }
+
 
     private class GridAdapter extends BaseAdapter {
 

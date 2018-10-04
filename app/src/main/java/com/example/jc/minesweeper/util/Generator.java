@@ -13,6 +13,7 @@ public class Generator {
      * within the grid.
      */
     public static int[][] generate(int bombnum, final int width, final int height) {
+        // Random for generating where the bombs will be
         Random r = new Random();
 
         int[][] grid = new int[width][height];
