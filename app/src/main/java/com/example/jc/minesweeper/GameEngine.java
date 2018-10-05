@@ -45,7 +45,7 @@ public class GameEngine {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 if (MinesweeperGrid[x][y] == null) {
-                    MinesweeperGrid[x][y] = new Cell(context, y * HEIGHT + x);
+                    MinesweeperGrid[x][y] = new Cell(context, x, y);
                 }
                 MinesweeperGrid[x][y].setValue(grid[x][y]);
                 MinesweeperGrid[x][y].invalidate();
@@ -53,9 +53,50 @@ public class GameEngine {
         }
     }
 
-    public View getCell(int position) {
+    public Cell getCell(int position) {
         int x = position % GameEngine.WIDTH;
         int y = (int)(position / GameEngine.HEIGHT);
         return MinesweeperGrid[x][y];
+    }
+
+    public Cell getCell(int x, int y) {
+        return MinesweeperGrid[x][y];
+    }
+
+
+    /**
+     * Reveal cell (x,y). If the cell has a value of 0, "click" all neighboring cells. On the other
+     * hand, if the cell contains a bomb, the bomb "explodes" and the game is over.
+     */
+    public void click(int x, int y) {
+        Cell clickedCell = this.getCell(x, y);
+        if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT && !clickedCell.isClicked()) {
+            // reveal the clicked cell
+            clickedCell.setClicked();
+
+            // if the cell has a value of 0, "click" all neighboring cells
+            if (clickedCell.getValue() == 0) {
+                for( int dx = -1 ; dx <= 1 ; dx++ ){
+                    for( int dy = -1 ; dy <= 1 ; dy++){
+                        if( dx != dy ){
+                            this.click(x + dx , y + dy);
+                        }
+                    }
+                }
+            }
+
+            // if a bomb was clicked
+            if (clickedCell.isBomb()) {
+                gameOver();
+            }
+        }
+    }
+
+    /**
+     * Called on game lost (i.e. when a bomb was clicked on).
+     * Reveals all the bombs on the minesweeper grid.
+     */
+    private void gameOver(){
+
     }
 }

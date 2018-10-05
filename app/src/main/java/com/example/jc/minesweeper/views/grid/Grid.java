@@ -21,14 +21,6 @@ public class Grid extends GridView {
         setAdapter(new GridAdapter());
     }
 
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // make every cell square
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
-    }
-
-
     private class GridAdapter extends BaseAdapter {
 
         @Override
