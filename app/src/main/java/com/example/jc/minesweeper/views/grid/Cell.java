@@ -29,11 +29,27 @@ public class Cell extends BaseCell implements View.OnClickListener {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawButton(canvas);
+
+        if (isFlagged()){
+            drawFlag(canvas);
+        } else if (isBomb() && isRevealed() && !isClicked()) {
+            drawNormalBomb(canvas);
+        } else {
+            if (isClicked()){
+                if (this.getValue() == -1) {
+                    drawExplodedBomb(canvas);
+                } else {
+                    drawNumber(canvas);
+                }
+            } else {
+                drawButton(canvas);
+            }
+        }
     }
 
     private void drawButton(Canvas canvas) {
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.button);
-        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());
+        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());    // bound image to this cell
         drawable.draw(canvas);
     }
 
@@ -73,6 +89,24 @@ public class Cell extends BaseCell implements View.OnClickListener {
         }
 
         drawable.setBounds(0,0,getWidth(),getHeight());
+        drawable.draw(canvas);
+    }
+
+    private void drawNormalBomb(Canvas canvas) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb_normal);
+        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());
+        drawable.draw(canvas);
+    }
+
+    private void drawExplodedBomb(Canvas canvas) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb_exploded);
+        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());
+        drawable.draw(canvas);
+    }
+
+    private void drawFlag(Canvas canvas) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.flag);
+        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());
         drawable.draw(canvas);
     }
 
