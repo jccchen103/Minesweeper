@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.example.jc.minesweeper.GameEngine;
+import com.example.jc.minesweeper.MinesweeperGame;
 
 /**
  * Created by JC on 9/28/2018.
@@ -16,8 +16,8 @@ import com.example.jc.minesweeper.GameEngine;
 public class Grid extends GridView {
     public Grid (Context context, AttributeSet attrSet) {
         super(context, attrSet);
-        GameEngine.getInstance().createGrid(context);
-        setNumColumns(GameEngine.WIDTH);
+        MinesweeperGame.getInstance().createGrid(context);
+        setNumColumns(MinesweeperGame.COLUMNS);
         setAdapter(new GridAdapter());
     }
 
@@ -25,7 +25,7 @@ public class Grid extends GridView {
 
         @Override
         public int getCount() {
-            return GameEngine.getInstance().WIDTH * GameEngine.getInstance().HEIGHT;
+            return MinesweeperGame.getInstance().COLUMNS * MinesweeperGame.getInstance().ROWS;
         }
 
         @Override
@@ -40,7 +40,9 @@ public class Grid extends GridView {
 
         @Override
         public View getView(int position, View view, ViewGroup viewGroup) {
-            return GameEngine.getInstance().getCell(position);
+            int x = position % MinesweeperGame.COLUMNS;
+            int y = (int)(position / MinesweeperGame.COLUMNS);
+            return MinesweeperGame.getInstance().getCell(x, y);
         }
     }
 }

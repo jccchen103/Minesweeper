@@ -7,14 +7,17 @@
     tools:context="com.example.jc.minesweeper.MainActivity">
 
     <TextView
+        android:id="@+id/helloworld"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Hello World!"
+        android:textSize="50sp"/>
 
     <com.example.jc.minesweeper.views.grid.Grid
         android:id="@+id/minesweeperGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"></com.example.jc.minesweeper.views.grid.Grid>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/helloworld"></com.example.jc.minesweeper.views.grid.Grid>
 
 </RelativeLayout>

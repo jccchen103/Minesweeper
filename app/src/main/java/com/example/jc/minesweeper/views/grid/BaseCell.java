@@ -3,18 +3,20 @@ package com.example.jc.minesweeper.views.grid;
 import android.content.Context;
 import android.view.View;
 
-import com.example.jc.minesweeper.GameEngine;
+import com.example.jc.minesweeper.MinesweeperGame;
 
 /**
  * Created by JC on 9/28/2018.
+ * Abstract cell class that stores an integer, has an x-position and y-position, and can be flagged,
+ * clicked, or revealed.
  */
 
 public abstract class BaseCell extends View {
-    private int value;
+    private int value;      // use the integer -1 to represent a bomb
     private boolean isBomb;
-    private boolean isRevealed;
     private boolean isClicked;
     private boolean isFlagged;
+    private boolean isRevealed;
 
     private int x, y;
     private int position;
@@ -50,6 +52,7 @@ public abstract class BaseCell extends View {
 
     public void setRevealed(boolean revealed) {
         isRevealed = revealed;
+        invalidate();
     }
 
     public boolean isClicked() {
@@ -59,7 +62,6 @@ public abstract class BaseCell extends View {
     public void setClicked() {
         isClicked = true;
         isRevealed = true;
-
         invalidate();
     }
 
@@ -86,7 +88,7 @@ public abstract class BaseCell extends View {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
-        this.position = y * GameEngine.WIDTH + x;
+        this.position = y * MinesweeperGame.COLUMNS + x;
 
         invalidate();
     }

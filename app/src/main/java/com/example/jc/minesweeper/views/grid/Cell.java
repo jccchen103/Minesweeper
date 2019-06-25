@@ -6,22 +6,26 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.example.jc.minesweeper.GameEngine;
+import com.example.jc.minesweeper.MinesweeperGame;
 import com.example.jc.minesweeper.R;
 
 /**
  * Created by JC on 9/28/2018.
+ * Clickable cell that make up the Minesweeper Grid.
  */
 
-public class Cell extends BaseCell implements View.OnClickListener {
+public class Cell extends BaseCell implements View.OnClickListener, View.OnLongClickListener {
+
     public Cell(Context context, int x, int y) {
         super(context);
         this.setPosition(x, y);
+        setOnClickListener(this);
+        setOnLongClickListener(this);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // make every cell square
+        // make cell square based on the width
         super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 
@@ -30,26 +34,26 @@ public class Cell extends BaseCell implements View.OnClickListener {
         super.onDraw(canvas);
         drawButton(canvas);
 
-        if (isFlagged()){
+        if (isFlagged()) {  // first check if the cell is flagged (if so, cannot click)
             drawFlag(canvas);
         } else if (isBomb() && isRevealed() && !isClicked()) {
-            drawNormalBomb(canvas);
+            drawNormalBomb(canvas);     // show unexploded bomb
         } else {
-            if (isClicked()){
-                if (this.getValue() == -1) {
+            if (isClicked()) {
+                if (this.getValue() == -1) {    // if player clicked this bomb cell
                     drawExplodedBomb(canvas);
-                } else {
+                } else {                        // if player clicked this non-bomb cell
                     drawNumber(canvas);
                 }
             } else {
-                drawButton(canvas);
+                drawButton(canvas);             // draw the unrevealed cell
             }
         }
     }
 
     private void drawButton(Canvas canvas) {
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.button);
-        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());    // bound image to this cell
+        drawable.setBounds(0, 0, this.getWidth(), this.getHeight());    // bound image to this View
         drawable.draw(canvas);
     }
 
@@ -112,8 +116,16 @@ public class Cell extends BaseCell implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        GameEngine.getInstance().click(this.getXPos(), this.getYPos());
-
+        if(!isFlagged()){
+            MinesweeperGame.getInstance().click(this.getXPos(), this.getYPos());
+        }
     }
 
+    // flag cell on a long click
+    @Override
+    public boolean onLongClick(View view) {
+        MinesweeperGame.getInstance().flag(this.getXPos(), this.getYPos());
+
+        return true;
+    }
 }
