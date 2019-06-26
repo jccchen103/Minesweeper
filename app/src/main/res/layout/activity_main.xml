@@ -6,18 +6,56 @@
     android:layout_height="match_parent"
     tools:context="com.example.jc.minesweeper.MainActivity">
 
-    <TextView
-        android:id="@+id/helloworld"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:textSize="50sp"/>
+        android:padding="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <Chronometer
+            android:id="@+id/bombsRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/counter_reset_padding"
+            android:background="@android:color/black"
+            android:format="000"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="36sp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/resetButton" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_reset"
+            android:onClick="reset"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <Chronometer
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:countDown="false"
+            android:format="000"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="36sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/resetButton"
+            android:layout_marginStart="@dimen/counter_reset_padding" />
+
+    </RelativeLayout>
 
     <com.example.jc.minesweeper.views.grid.Grid
         android:id="@+id/minesweeperGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/helloworld"></com.example.jc.minesweeper.views.grid.Grid>
+        android:layout_below="@+id/header"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"></com.example.jc.minesweeper.views.grid.Grid>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.jc.minesweeper;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.jc.minesweeper.util.Generator;
 import com.example.jc.minesweeper.views.grid.Cell;
@@ -15,7 +16,7 @@ public class MinesweeperGame {      // Singleton class
     private static MinesweeperGame instance = null;
 
     private static final int BOMB_NUMBER = 10;
-    public static final int COLUMNS = 10;
+    public static final int COLUMNS = 9;
     public static final int ROWS = 10;
 
     private Context context;
@@ -96,9 +97,7 @@ public class MinesweeperGame {      // Singleton class
             }
 
             // check if game has been won
-            if(checkWin()){
-                System.out.println("GAME WON");
-            }
+            checkWin();
         }
     }
 
@@ -116,25 +115,47 @@ public class MinesweeperGame {      // Singleton class
         for (int x = 0; x < COLUMNS; x++ ){
             for (int y = 0; y < ROWS; y++){
                 getCell(x,y).setRevealed(true);
+                getCell(x,y).setEnabled(false);
             }
         }
+        Toast.makeText(context, "GAME LOST", Toast.LENGTH_LONG).show();
     }
 
     /**
-     * Check if the game has been won (i.e. if every non-bomb cell has been "clicked").
+     * Check and handles if the game has been won (i.e. if every non-bomb cell has been "clicked").
      */
-    private boolean checkWin(){
+    private void checkWin(){
         for ( int x = 0 ; x < COLUMNS ; x++ ){
             for( int y = 0 ; y < ROWS ; y++ ){
                 if (!getCell(x,y).isBomb() && !getCell(x,y).isClicked()){
-                    return false;
+                    return;     // have not won the game
                 }
             }
         }
-        return true;
+
+        // game won
+        Toast.makeText(context, "GAME WON", Toast.LENGTH_LONG).show();
+        // disable cells
+        for (int x = 0; x < COLUMNS; x++ ){
+            for (int y = 0; y < ROWS; y++){
+                getCell(x,y).setEnabled(false);
+            }
+        }
     }
 
-    private static void print( final int[][] grid , final int columns , final int rows ){
+    public void resetGame(){
+        // create a new grid
+        createGrid(context);
+
+        // if cells were disabled (after loss), re-enable them
+        for (int x = 0; x < COLUMNS; x++ ){
+            for (int y = 0; y < ROWS; y++){
+                getCell(x,y).setEnabled(true);
+            }
+        }
+    }
+
+    private void print( final int[][] grid , final int columns , final int rows ){
         for( int y = 0 ; y < rows ; y++ ){
             String printStr = "| ";
             for( int x = 0 ; x < columns ; x++ ){
