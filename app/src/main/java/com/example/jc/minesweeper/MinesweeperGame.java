@@ -15,9 +15,9 @@ import com.example.jc.minesweeper.views.grid.Cell;
 public class MinesweeperGame {      // Singleton class
     private static MinesweeperGame instance = null;
 
-    private static final int BOMB_NUMBER = 10;
+    public static final int BOMB_NUMBER = 10;
     public static final int COLUMNS = 9;
-    public static final int ROWS = 10;
+    public static final int ROWS = 9;
 
     private Context context;
     private Cell[][] MinesweeperGrid = new Cell[COLUMNS][ROWS];
@@ -91,13 +91,14 @@ public class MinesweeperGame {      // Singleton class
 
                 // if the clicked cell contained a bomb
                 else if (clickedCell.isBomb()){
-                    System.out.println("GAME LOST");
-                    gameOver();
+                    endGame(false);
                 }
             }
 
             // check if game has been won
-            checkWin();
+            if(checkWin()){
+                endGame(true);
+            }
         }
     }
 
@@ -108,46 +109,46 @@ public class MinesweeperGame {      // Singleton class
     }
 
     /**
-     * Handles lost game (i.e. when a bomb was clicked on).
-     * Reveal all the bombs on the minesweeper grid.
+     * Handles ending the game on either a win or a loss.
+     * Disables all cells in the grid and shows the appropriate toast.
      */
-    private void gameOver(){
+    private void endGame(boolean won){
         for (int x = 0; x < COLUMNS; x++ ){
             for (int y = 0; y < ROWS; y++){
-                getCell(x,y).setRevealed(true);
-                getCell(x,y).setEnabled(false);
+                if (!won){  // if the game was lost, reveal all the bombs
+                    getCell(x,y).setRevealed(true);
+                }
+                getCell(x,y).setEnabled(false); // disable all cells
             }
         }
-        Toast.makeText(context, "GAME LOST", Toast.LENGTH_LONG).show();
+
+        // show respective toast
+        if (won){
+            Toast.makeText(context, "GAME WON", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "GAME LOST", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
-     * Check and handles if the game has been won (i.e. if every non-bomb cell has been "clicked").
+     * Checks if the game has been won (i.e. if every non-bomb cell has been "clicked").
      */
-    private void checkWin(){
+    private boolean checkWin(){
         for ( int x = 0 ; x < COLUMNS ; x++ ){
             for( int y = 0 ; y < ROWS ; y++ ){
                 if (!getCell(x,y).isBomb() && !getCell(x,y).isClicked()){
-                    return;     // have not won the game
+                    return false;     // have not won the game
                 }
             }
         }
-
-        // game won
-        Toast.makeText(context, "GAME WON", Toast.LENGTH_LONG).show();
-        // disable cells
-        for (int x = 0; x < COLUMNS; x++ ){
-            for (int y = 0; y < ROWS; y++){
-                getCell(x,y).setEnabled(false);
-            }
-        }
+        return true;
     }
 
-    public void resetGame(){
+    void resetGame(){
         // create a new grid
         createGrid(context);
 
-        // if cells were disabled (after loss), re-enable them
+        // make sure every cell is enabled
         for (int x = 0; x < COLUMNS; x++ ){
             for (int y = 0; y < ROWS; y++){
                 getCell(x,y).setEnabled(true);

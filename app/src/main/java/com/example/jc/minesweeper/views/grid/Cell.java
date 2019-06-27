@@ -116,8 +116,9 @@ public class Cell extends BaseCell implements View.OnClickListener, View.OnLongC
 
     @Override
     public void onClick(View view) {
+        MinesweeperGame gameInstance = MinesweeperGame.getInstance();
         if(!isFlagged()){
-            MinesweeperGame.getInstance().click(this.getXPos(), this.getYPos());
+            gameInstance.click(this.getXPos(), this.getYPos());
         }
     }
 

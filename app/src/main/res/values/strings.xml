@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Minesweeper</string>
     <string name="button_reset">Reset</string>
+    <string name="instruction">Find all 10 mines.\nHold to set a flag.</string>
 </resources>

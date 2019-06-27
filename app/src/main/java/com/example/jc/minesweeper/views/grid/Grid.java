@@ -41,7 +41,7 @@ public class Grid extends GridView {
         @Override
         public View getView(int position, View view, ViewGroup viewGroup) {
             int x = position % MinesweeperGame.COLUMNS;
-            int y = (int)(position / MinesweeperGame.COLUMNS);
+            int y = position / MinesweeperGame.COLUMNS;
             return MinesweeperGame.getInstance().getCell(x, y);
         }
     }
